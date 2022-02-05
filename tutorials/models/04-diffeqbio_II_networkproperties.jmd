@@ -14,7 +14,7 @@ We'll illustrate the API using a toggle-switch like network that contains a
 variety of different reaction types:
 
 ```julia
-using DifferentialEquations, DiffEqBiological, Latexify, Plots
+using DifferentialEquations, Catalyst, Latexify, Plots
 fmt = :svg
 pyplot(fmt=fmt)
 rn = @reaction_network begin
@@ -61,35 +61,33 @@ The numbers of species, parameters and reactions can be accessed using
 `numspecies(rn)`, `numparams(rn)` and `numreactions(rn)`.
 
 A number of functions are available to access [properties of
-reactions](https://docs.sciml.ai/latest/apis/diffeqbio/#Reaction-Properties-1)
-within the generated network, including `substrates`, `products`, `dependents`,
-`ismassaction`, `substratestoich`, `substratesymstoich`, `productstoich`,
-`productsymstoich`, and `netstoich`. Each of these functions takes two
-arguments, the reaction network `rn` and the index of the reaction to query
-information about. For example, to find the substrate symbols and their
-corresponding stoichiometries for the 11th reaction, `2P₁ --> D₁`, we would use
+reactions](https://catalyst.sciml.ai/dev/api/catalyst_api/#Basic-Reaction-Properties)
+within the generated network, including `dependents`,
+`ismassaction`, `substratestoichmat`, `prodstoichmat`and `netstoich`. Each of these
+functions takes the reaction network `rn` as argument. For example, to find the substrate
+stoichiometries across all reactions, we use
 
 ```julia
-substratesymstoich(rn, 11)
+substratestoichmat(rn)
 ```
 
-Broadcasting works on all these functions, allowing the construction of a vector
-holding the queried information across all reactions, i.e.
+To show only the queried information for i. e. the 11th reaction, `2P₁ --> D₁`, as a row
+vector, we select the row and transpose the resulting vector
 
 ```julia
-substratesymstoich.(rn, 1:numreactions(rn))
+substratestoichmat(rn)[:,11]'
 ```
 
 To see the net stoichiometries for all reactions we would use
 
 ```julia
-netstoich.(rn, 1:numreactions(rn))
+netstoichmat(rn)
 ```
 
 Here the first integer in each pair corresponds to the index of the species
 (with symbol `species(rn)[index]`). The second integer corresponds to the net
-stoichiometric coefficient of the species within the reaction. `substratestoich`
-and `productstoich` are defined similarly.
+stoichiometric coefficient of the species within the reaction. `substratestoichmat`
+and `prodstoichmat` are defined similarly.
 
 Several functions are also provided that calculate different types of
 [dependency
@@ -484,5 +482,5 @@ request to SciMLTutorials updating the tutorial!
 ---
 ```julia; echo=false; skip="notebook"
 using SciMLTutorials
-SciMLTutorials.tutorial_footer(WEAVE_ARGS[:folder],WEAVE_ARGS[:file], remove_homedir=true)
+SciMLTutorials.tutorial_footer(WEAVE_ARGS[:folder],WEAVE_ARGS[:file])
 ```

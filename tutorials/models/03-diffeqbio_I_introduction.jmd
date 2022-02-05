@@ -20,9 +20,9 @@ figures:
 
 ```julia
 # If not already installed, first hit "]" within a Julia REPL. Then type:
-# add DifferentialEquations DiffEqBiological PyPlot Plots Latexify
+# add DifferentialEquations Catalyst PyPlot Plots Latexify
 
-using DifferentialEquations, DiffEqBiological, Plots, Latexify
+using DifferentialEquations, Catalyst, Plots, Latexify
 pyplot(fmt=:svg);
 ```
 
@@ -227,6 +227,8 @@ The generated `reaction_network` contains a lot of basic information. For exampl
   expressions can be accessed using the `jacobianexprs` function:
 ```julia; results="hidden";
 latexify(jacobianexprs(repressilator), cdot=false)
+mdoprob = modelingtoolkitize(oprob)
+generate_jacobian(mdoprob)
 ```
 ```julia; echo=false; skip="notebook";
 x = latexify(jacobianexprs(repressilator), cdot=false, starred=true);
@@ -242,8 +244,8 @@ display("text/latex", "$x");
 By default, generated `ODEProblems` will be passed the corresponding Jacobian
 function, which will then be used within implicit ODE/SDE methods.
 
-The [DiffEqBiological API
-documentation](https://docs.sciml.ai/dev/apis/diffeqbio) provides
+The [Catalyst API
+documentation](https://catalyst.sciml.ai/dev/api/catalyst_api) provides
 a thorough description of the many query functions that are provided to access
 network properties and generated functions. In DiffEqBiological Tutorial II
 we'll explore the API.
@@ -257,11 +259,11 @@ request/discuss new functionality, feel free to open an issue on
 [Github](https://github.com/JuliaDiffEq/DiffEqBiological.jl) (but please check
 there is no related issue already open). If you've found a bug in this tutorial,
 or have a suggestion, feel free to open an issue on the [SciMLTutorials Github
-site](https://github.com/JuliaDiffEq/SciMLTutorials.jl). Or, submit a pull
+site](https://github.com/SciML/SciMLTutorials.jl). Or, submit a pull
 request to SciMLTutorials updating the tutorial!
 
 ---
 ```julia; echo=false; skip="notebook"
 using SciMLTutorials
-SciMLTutorials.tutorial_footer(WEAVE_ARGS[:folder],WEAVE_ARGS[:file], remove_homedir=true)
+SciMLTutorials.tutorial_footer(WEAVE_ARGS[:folder],WEAVE_ARGS[:file])
 ```
